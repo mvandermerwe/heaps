@@ -126,7 +126,7 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * @param index
 	 *            - index to percolate up.
 	 */
-	public void percolateUp(int index) {
+	private void percolateUp(int index) {
 		Type element = heap_array[index];
 
 		// while its parent is greater than it, swap them.
@@ -144,15 +144,15 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * @param index
 	 *            - Initial location of element to percolate down
 	 */
-	public void percolateDown(int index) {
+	private void percolateDown(int index) {
 
 		// If no children, can't percolate down further
 		if (index * 2 > size) {
 			return;
 		}
-		
-		if(size == 2) {
-			int minIndex = minElement(index, index+1);
+
+		if (size == 2) {
+			int minIndex = minElement(index, index + 1);
 			swap(index, minIndex);
 			return;
 		}
@@ -181,6 +181,8 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * Finds the minimum element at two indices in the heap array and returns
 	 * its location
 	 * 
+	 * FIXME: Need to do one child mins better.
+	 * 
 	 * @param index1
 	 *            - Location of first element
 	 * @param index2
@@ -188,6 +190,10 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * @return - Location of minimum
 	 */
 	public int minElement(int index1, int index2) {
+		if (index1 > size || index2 > size || index1 < 1 || index2 < 1) {
+			throw new NoSuchElementException();
+		}
+
 		Type element1 = heap_array[index1];
 		Type element2 = heap_array[index2];
 		if (compare(element1, element2) > 0) {
