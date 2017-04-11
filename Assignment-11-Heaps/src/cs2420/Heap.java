@@ -151,11 +151,11 @@ public class Heap<Type> implements Priority_Queue<Type> {
 			return;
 		}
 
-		if (size == 2) {
-			int minIndex = minElement(index, index + 1);
-			swap(index, minIndex);
-			return;
-		}
+		// if (size == 2) {
+		// int minIndex = minElement(index, index + 1);
+		// swap(index, minIndex);
+		// return;
+		// }
 
 		Type element = heap_array[index];
 
@@ -164,16 +164,11 @@ public class Heap<Type> implements Priority_Queue<Type> {
 
 		// Continually swap parent with minimum child if children larger than
 		// parent
-		while (index < size && compare(element, heap_array[compIndex]) > 0) {
+		// If minElement returns -1, no children so break loop.
+		while (index < size && (compIndex == -1 ? false : compare(element, heap_array[compIndex]) > 0)) {
 			swap(index, compIndex);
 			index = compIndex;
-			if (index * 2 + 1 <= size) {
-				// Reevaluate index to compare.
-				compIndex = minElement(index * 2, index * 2 + 1);
-			} else {
-				// If we reach here, no more children, leave the loop.
-				break;
-			}
+			compIndex = minElement(index * 2, index * 2 + 1);
 		}
 	}
 
@@ -181,25 +176,34 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * Finds the minimum element at two indices in the heap array and returns
 	 * its location
 	 * 
-	 * FIXME: Need to do one child mins better.
-	 * 
 	 * @param index1
 	 *            - Location of first element
 	 * @param index2
-	 *            - Location of second element
-	 * @return - Location of minimum
+	 *            - Location of second element - should be next element after
+	 *            index1.
+	 * @return - Location of minimum, -1 if no children.
 	 */
 	public int minElement(int index1, int index2) {
-		if (index1 > size || index2 > size || index1 < 1 || index2 < 1) {
+		// If illegal index throw new exception.
+		if (index1 < 1 || index2 < 1) {
 			throw new NoSuchElementException();
 		}
 
-		Type element1 = heap_array[index1];
-		Type element2 = heap_array[index2];
-		if (compare(element1, element2) > 0) {
-			return index2;
+		if (index1 > size) {
+			// If index1 above size, no children.
+			return -1;
+		} else if (index2 > size) {
+			// If index2 above size, one child hence one min.
+			return index1;
+		} else {
+			// If both are
+			Type element1 = heap_array[index1];
+			Type element2 = heap_array[index2];
+			if (compare(element1, element2) > 0) {
+				return index2;
+			}
+			return index1;
 		}
-		return index1;
 	}
 
 	/**
