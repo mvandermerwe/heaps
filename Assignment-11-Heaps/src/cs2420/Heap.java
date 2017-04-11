@@ -150,6 +150,12 @@ public class Heap<Type> implements Priority_Queue<Type> {
 		if (index * 2 > size) {
 			return;
 		}
+		
+		if(size == 2) {
+			int minIndex = minElement(index, index+1);
+			swap(index, minIndex);
+			return;
+		}
 
 		Type element = heap_array[index];
 
@@ -161,7 +167,13 @@ public class Heap<Type> implements Priority_Queue<Type> {
 		while (index < size && compare(element, heap_array[compIndex]) > 0) {
 			swap(index, compIndex);
 			index = compIndex;
-			compIndex = minElement(index * 2, index * 2 + 1);
+			if (index * 2 + 1 <= size) {
+				// Reevaluate index to compare.
+				compIndex = minElement(index * 2, index * 2 + 1);
+			} else {
+				// If we reach here, no more children, leave the loop.
+				break;
+			}
 		}
 	}
 
@@ -246,7 +258,7 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * @return a copy of the array used in the heap
 	 */
 	public Object[] toArray() {
-		Object[] copy_of_array = new Object[size];
+		Object[] copy_of_array = new Object[size + 1];
 
 		for (int i = 1; i <= size; i++) {
 			copy_of_array[i] = heap_array[i];
