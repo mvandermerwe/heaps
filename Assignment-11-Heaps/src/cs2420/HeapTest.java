@@ -137,6 +137,7 @@ public class HeapTest {
 	/**
 	 * Make sure we can peek correctly at the smallest value in the heap.
 	 */
+	@Test
 	public void test_peek() {
 		// Test peeking into a multiple element heap.
 		assertEquals(1, (int) heap.peek());
@@ -147,27 +148,22 @@ public class HeapTest {
 		assertEquals(4, (int) oneSizeHeap.peek());
 
 		// Test peeking into a zero element heap.
-		try {
-			zeroSizeHeap.peek();
-			fail("Should have thrown NoSuchElementException");
-		} catch (NoSuchElementException e) {
-			// Test passes.
-		}
+		assertEquals(null, zeroSizeHeap.peek());
 	}
 
 	/**
-	 * Test returning of index of the smaller of two provided indices.
+	 * Make sure we can clear our heaps.
 	 */
-	public void test_minimum() {
-		//assertEquals()
-	}
-
-	public void test_swap() {
-
-	}
-
+	@Test
 	public void test_clear() {
-
+		heap.clear();
+		assertEquals(0, heap.size());
+		
+		oneSizeHeap.clear();
+		assertEquals(0, oneSizeHeap.size());
+		
+		zeroSizeHeap.clear();
+		assertEquals(0, zeroSizeHeap.size());
 	}
 
 }
