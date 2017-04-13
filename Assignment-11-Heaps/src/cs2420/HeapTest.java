@@ -63,7 +63,7 @@ public class HeapTest {
 		//
 		// or uncomment this line, run the tests:
 		//
-		System.out.println(heap);
+		//System.out.println(heap);
 		//
 		// and then paste the output of the console into:
 		// http://www.webgraphviz.com/
@@ -158,12 +158,59 @@ public class HeapTest {
 	public void test_clear() {
 		heap.clear();
 		assertEquals(0, heap.size());
-		
+
 		oneSizeHeap.clear();
 		assertEquals(0, oneSizeHeap.size());
-		
+
 		zeroSizeHeap.clear();
 		assertEquals(0, zeroSizeHeap.size());
+	}
+
+	/**
+	 * Quick test on our heap sort.
+	 */
+	@Test
+	public void test_heap_sort() {
+		// Sorting small heap
+		heap.heap_sort();
+		Object[] temp = heap.toArray();
+		assertArrayEquals(temp, new Integer[] { null, 8, 7, 6, 5, 3, 1 });
+
+		// Sorting heap of size 1
+		oneSizeHeap.heap_sort();
+		temp = oneSizeHeap.toArray();
+		assertArrayEquals(temp, new Integer[] { null, 4 });
+
+		// Sorting heap of size 0
+		zeroSizeHeap.heap_sort();
+		temp = zeroSizeHeap.toArray();
+		assertArrayEquals(temp, new Integer[] { null });
+	}
+	
+	/**
+	 * Test for building a heap from an array
+	 */
+	@Test
+	public void test_build_heap_from_array() {
+		// Building heap from small array
+		Integer[] tempArray = { 8, 7, 6, 5, 3, 1 };
+		heap.build_heap_from_array(tempArray);
+		Object[] temp = heap.toArray();
+		assertArrayEquals(temp, new Integer[] { null, 1, 3, 6, 5, 7, 8 } );
+		
+		// Building heap from array of size 1
+		Integer[] oneSizeArray = { 1 };
+		heap.build_heap_from_array(oneSizeArray);
+		temp = heap.toArray();
+		assertArrayEquals(temp, new Integer[] { null, 1 } );
+		
+		// Building heap from array of size 0
+		Integer[] zeroSizeArray = { };
+		heap.build_heap_from_array(zeroSizeArray);
+		temp = heap.toArray();
+		assertArrayEquals(temp, new Integer[] { null } );
+		
+		
 	}
 
 }

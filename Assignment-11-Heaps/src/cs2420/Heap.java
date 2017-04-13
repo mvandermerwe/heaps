@@ -35,6 +35,11 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * If the user provides a comparator, use it instead of default comparable
 	 */
 	private Comparator<? super Type> comparator;
+	
+	/**
+	 * Keep track of the number of element swaps done through insertions, deletions, building heaps, etc.
+	 */
+	private int swaps;
 
 	/**
 	 * Constructs an empty priority queue. Orders elements according to their
@@ -79,7 +84,7 @@ public class Heap<Type> implements Priority_Queue<Type> {
 
 		// replace the item at minIndex with the last item in the tree
 		swap(1, size);
-		heap_array[size] = null;
+//		heap_array[size] = null;
 
 		// update size
 		size--;
@@ -151,12 +156,6 @@ public class Heap<Type> implements Priority_Queue<Type> {
 			return;
 		}
 
-		// if (size == 2) {
-		// int minIndex = minElement(index, index + 1);
-		// swap(index, minIndex);
-		// return;
-		// }
-
 		Type element = heap_array[index];
 
 		// Find minimum element between two children
@@ -218,6 +217,7 @@ public class Heap<Type> implements Priority_Queue<Type> {
 		Type element1 = heap_array[index1];
 		heap_array[index1] = heap_array[index2];
 		heap_array[index2] = element1;
+		swaps++;
 	}
 
 	/**
@@ -252,6 +252,7 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * the user at construction time, or Comparable, if no Comparator was
 	 * provided.
 	 */
+	@SuppressWarnings("unchecked")
 	private int compare(Type lhs, Type rhs) {
 		if (comparator == null) {
 			return ((Comparable<? super Type>) lhs).compareTo(rhs); // safe to
@@ -311,9 +312,20 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * @param array
 	 *            - random data (unordered)
 	 */
+	@SuppressWarnings("unchecked")
 	public void build_heap_from_array(Type[] array) {
 		// WARNING: advanced work only worth 2.5% of grade
 		// If you do not fully implement this code, leave it blank
+		this.heap_array = (Type[]) new Object[array.length+1];
+		for(int index = 1; index < heap_array.length; index++){
+			heap_array[index] = array[index-1];
+		}
+		size = array.length;
+		int halfway = size/2;
+		for(int index = halfway; index > 0; index--){
+			percolateDown(index);
+		}
+		
 	}
 
 	/**
@@ -326,12 +338,29 @@ public class Heap<Type> implements Priority_Queue<Type> {
 	 * 
 	 */
 	public void heap_sort() {
-		// WARNING: advanced work only worth 2.5% of grade
-		// If you do not fully implement this code, leave it blank
-
+		int tempSize = size;
+		
+		while(size > 0) {
+			dequeue();
+		}
+		
+		this.size = tempSize;
 	}
 	////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Reset swap count for timing analysis
+	 */
+	public void clear_swaps() {
+		swaps = 0;
+	}
+	
+	public int get_swaps() {
+		return swaps;
+	}
+	
+	
+	
 	/**
 	 * Return the value of the smallest item in our heap.
 	 * 
