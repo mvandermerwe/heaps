@@ -299,7 +299,10 @@ public class Heap<Type> implements Priority_Queue<Type> {
 		result += "}";
 
 		result += "\n//--------------------------------------------\n"
-				+ "// Any other info you want to put about your heap";
+				+ "// Additional Info: \n"
+				+ "Size: " + size + "\n"
+				+ "Capacity of backing array: " + heap_array.length + "\n"
+				+ "Swaps: " + swaps;
 
 		return result;
 	}
