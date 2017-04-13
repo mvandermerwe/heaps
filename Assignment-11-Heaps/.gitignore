@@ -2,3 +2,4 @@
 *.dot
 *.csv
 *.xlsx
+/insertTimes.xls

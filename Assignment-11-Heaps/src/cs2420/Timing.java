@@ -15,7 +15,7 @@ public class Timing {
 	// Control N in tests.
 	public static final int START = 1000;
 	public static final int END = 500000;
-	public static final int INCREMENT = 50000;
+	public static final int INCREMENT = 100000;
 
 	// Control repetition of tests for accuracy.
 	public static final int TESTS = 100;
@@ -46,8 +46,8 @@ public class Timing {
 				// First time inserting N elements to empty heap.
 				for (int index = 0; index < n; index++) {
 					Integer temp = 0;
-					
-					switch(dataType) {
+
+					switch (dataType) {
 					case RANDOM:
 						temp = generator.nextInt(n);
 						break;
@@ -58,7 +58,7 @@ public class Timing {
 						temp = n - index;
 						break;
 					}
-					 
+
 					long startTime = System.nanoTime();
 					heap.add(temp);
 					totalInsertionTime += (System.nanoTime() - startTime) / TESTS;
@@ -84,7 +84,7 @@ public class Timing {
 		}
 
 		// Write vals to file.
-		sendToFile(insertTimes, "insertTimes" + dataType +".csv");
+		sendToFile(insertTimes, "insertTimes" + dataType + ".csv");
 	}
 
 	public static void testDeleting() {
@@ -135,13 +135,106 @@ public class Timing {
 		sendToFile(deleteTimes, "deleteTimes.csv");
 	}
 
+	/**
+	 * Run timing tests on build heap from array of N values into an empty heap.
+	 * Also track swaps to build from array.
+	 */
+	public static void testBuildFromArray(DataOrder dataType) {
+		StringBuilder buildFromArrayTimes = new StringBuilder();
+		Random generator = new Random();
+
+		// Increment through N values.
+		for (int n = START; n <= END; n += INCREMENT) {
+
+			long totalBuildFromArrayTime = 0;
+			double totalBuildFromArraySwaps = 0;
+
+			for (int test = 0; test < TESTS; test++) {
+				Heap<Integer> heap = new Heap<Integer>();
+				Integer temp[] = new Integer[n];
+
+				// Decide how to add data to array.
+				for (int index = 0; index < n; index++) {
+					switch (dataType) {
+					case RANDOM:
+						temp[index] = generator.nextInt(n);
+						break;
+					case IN_ORDER:
+						temp[index] = index;
+						break;
+					case BACK_ORDER:
+						temp[index] = n - index;
+						break;
+					}
+				}
+
+				long startTime = System.nanoTime();
+				heap.build_heap_from_array(temp);
+				totalBuildFromArrayTime += (System.nanoTime() - startTime) / TESTS;
+
+				totalBuildFromArraySwaps += (double) heap.get_swaps() / (double) TESTS;
+				heap.clear_swaps();
+
+				// Reset the heap for the next go around.
+				heap.clear();
+			}
+
+			// Write for N vals to file.
+			buildFromArrayTimes.append(n + "," + totalBuildFromArrayTime + "," + totalBuildFromArraySwaps + "\n");
+		}
+
+		// Write vals to file.
+		sendToFile(buildFromArrayTimes, "buildFromArrayTimes" + dataType + ".csv");
+	}
+
+	public static void testHeapSort() {
+		StringBuilder heapSortTimes = new StringBuilder();
+		Random generator = new Random();
+
+		// Increment through N values.
+		for (int n = START; n <= END; n += INCREMENT) {
+
+			long totalHeapSortTime = 0;
+			double totalHeapSortSwaps = 0;
+
+			for (int test = 0; test < TESTS; test++) {
+				Heap<Integer> heap = new Heap<Integer>();
+
+				// Create a heap of N random elements
+				for (int index = 0; index < n + 1; index++) {
+					Integer temp = generator.nextInt(n + 1);
+					heap.add(temp);
+				}
+				heap.clear_swaps();
+
+				long startTime = System.nanoTime();
+				heap.heap_sort();
+				totalHeapSortTime += (System.nanoTime() - startTime)/TESTS;
+				
+				totalHeapSortSwaps += (double) heap.get_swaps() / (double) TESTS;
+				heap.clear_swaps();
+
+				// Reset the heap for the next go around.
+				heap.clear();
+			}
+
+			// Write for N vals to file.
+			heapSortTimes.append(n + "," + totalHeapSortTime + "," + totalHeapSortSwaps + "\n");
+		}
+
+		// Write vals to file.
+		sendToFile(heapSortTimes, "sortTimes.csv");
+	}
+
 	public static void main(String args[]) {
 		for (int warmup = 0; warmup < 1000; warmup++) {
 			System.nanoTime();
 		}
 
-		// testInserting();
-		 testDeleting();
+		// testInserting(DataOrder.RANDOM);
+		// testDeleting();
+		// testBuildFromArray(DataOrder.RANDOM);
+		testHeapSort();
 	}
 
 	/**
