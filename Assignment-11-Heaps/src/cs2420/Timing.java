@@ -14,7 +14,7 @@ public class Timing {
 
 	// Control N in tests.
 	public static final int START = 1000;
-	public static final int END = 500000;
+	public static final int END = 2001001;
 	public static final int INCREMENT = 100000;
 
 	// Control repetition of tests for accuracy.
@@ -81,6 +81,8 @@ public class Timing {
 			// Write for N vals to file.
 			insertTimes.append(n + "," + totalInsertionTime + "," + totalInsertionSwaps + "," + insertOneTime + ","
 					+ insertOneSwaps + "\n");
+			System.out.println(n + "," + totalInsertionTime + "," + totalInsertionSwaps + "," + insertOneTime + ","
+					+ insertOneSwaps);
 		}
 
 		// Write vals to file.
@@ -129,6 +131,8 @@ public class Timing {
 			// Write for N vals to file.
 			deleteTimes.append(n + "," + totalDeletionTime + "," + totalDeletionSwaps + "," + deleteOneTime + ","
 					+ deleteOneSwaps + "\n");
+			System.out.println(n + "," + totalDeletionTime + "," + totalDeletionSwaps + "," + deleteOneTime + ","
+					+ deleteOneSwaps);
 		}
 
 		// Write vals to file.
@@ -181,6 +185,7 @@ public class Timing {
 
 			// Write for N vals to file.
 			buildFromArrayTimes.append(n + "," + totalBuildFromArrayTime + "," + totalBuildFromArraySwaps + "\n");
+			System.out.println(n + "," + totalBuildFromArrayTime + "," + totalBuildFromArraySwaps);
 		}
 
 		// Write vals to file.
@@ -220,6 +225,7 @@ public class Timing {
 
 			// Write for N vals to file.
 			heapSortTimes.append(n + "," + totalHeapSortTime + "," + totalHeapSortSwaps + "\n");
+			System.out.println(n + "," + totalHeapSortTime + "," + totalHeapSortSwaps);
 		}
 
 		// Write vals to file.
@@ -231,9 +237,11 @@ public class Timing {
 			System.nanoTime();
 		}
 
-		// testInserting(DataOrder.RANDOM);
-		// testDeleting();
-		// testBuildFromArray(DataOrder.RANDOM);
+		testInserting(DataOrder.BACK_ORDER);
+		testDeleting();
+		testBuildFromArray(DataOrder.RANDOM);
+		testBuildFromArray(DataOrder.IN_ORDER);
+		testBuildFromArray(DataOrder.BACK_ORDER);
 		testHeapSort();
 	}
 

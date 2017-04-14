@@ -2,4 +2,5 @@
 *.dot
 *.csv
 *.xlsx
-/insertTimes.xls
+*.xls
+*.zip

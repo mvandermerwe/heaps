@@ -300,9 +300,9 @@ public class Heap<Type> implements Priority_Queue<Type> {
 
 		result += "\n//--------------------------------------------\n"
 				+ "// Additional Info: \n"
-				+ "Size: " + size + "\n"
-				+ "Capacity of backing array: " + heap_array.length + "\n"
-				+ "Swaps: " + swaps;
+				+ "//Size: " + size + "\n"
+				+ "//Capacity of backing array: " + heap_array.length + "\n"
+				+ "//Swaps: " + swaps;
 
 		return result;
 	}
