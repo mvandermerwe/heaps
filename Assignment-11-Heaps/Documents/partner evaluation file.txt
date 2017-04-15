@@ -1,0 +1,18 @@
+---- partner evaluation file -----
+Homework 11 - Partner Evaluation
+My Name: Roman Clark
+Partner: Mark Van der Merwe
+Date:    April 14, 2017
+
+Hours Worked on Project: 7 hours
+
+Partner Score: 3 My partner did an equal amount of work to me.
+
+Group Analysis:
+
+Our group worked very well. It may be due to the fact that this was one of the easier assignments,
+but we ran into no issues, and Mark was a great partner for encouraging testing as we went, commenting
+as we went, and getting work done in a timely manner. We both watched the videos beforehand and
+definitely felt prepared for this assignment. The analysis was sort of extensive, but the group coding
+went well, and unlike previous assignments, we were able to do 100% of the coding together.
+----------------------------------

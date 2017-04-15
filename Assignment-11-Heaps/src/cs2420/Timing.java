@@ -41,12 +41,15 @@ public class Timing {
 			long insertOneTime = 0;
 			double insertOneSwaps = 0;
 
+			// Timing is done TESTS times and then averaged 
 			for (int test = 0; test < TESTS; test++) {
 				Heap<Integer> heap = new Heap<Integer>();
+				
 				// First time inserting N elements to empty heap.
 				for (int index = 0; index < n; index++) {
 					Integer temp = 0;
 
+					// Determine type of data being inserted
 					switch (dataType) {
 					case RANDOM:
 						temp = generator.nextInt(n);
@@ -59,10 +62,13 @@ public class Timing {
 						break;
 					}
 
+					// Time inserting one elements
 					long startTime = System.nanoTime();
 					heap.add(temp);
 					totalInsertionTime += (System.nanoTime() - startTime) / TESTS;
 				}
+				
+				// Get swaps for one element
 				totalInsertionSwaps += (double) heap.get_swaps() / (double) TESTS;
 				heap.clear_swaps();
 
@@ -71,6 +77,8 @@ public class Timing {
 				long startTime = System.nanoTime();
 				heap.add(temp);
 				insertOneTime += (System.nanoTime() - startTime) / TESTS;
+				
+				// Get swaps for N elements
 				insertOneSwaps += (double) heap.get_swaps() / (double) TESTS;
 				heap.clear_swaps();
 
@@ -89,6 +97,10 @@ public class Timing {
 		sendToFile(insertTimes, "insertTimes" + dataType + ".csv");
 	}
 
+	/**
+	 * Test performance of dequeuing one element from a N-sized Heap, then
+	 * dequeuing N elements from an N-sized Heap. Also tracks swaps.
+	 */
 	public static void testDeleting() {
 		StringBuilder deleteTimes = new StringBuilder();
 		Random generator = new Random();
@@ -101,26 +113,34 @@ public class Timing {
 			long deleteOneTime = 0;
 			double deleteOneSwaps = 0;
 
+			// Timing is done TESTS times and then averaged 
 			for (int test = 0; test < TESTS; test++) {
 				Heap<Integer> heap = new Heap<Integer>();
-				// Create a heap of N elements
+				
+				// Create a heap of N random elements
 				for (int index = 0; index < n + 1; index++) {
 					Integer temp = generator.nextInt(n + 1);
 					heap.add(temp);
 				}
 				heap.clear_swaps();
+				
+				// Time dequeuing one element
 				long startTime = System.nanoTime();
 				heap.dequeue();
 				deleteOneTime += (System.nanoTime() - startTime) / TESTS;
 
+				// Get swaps for one element
 				deleteOneSwaps += (double) heap.get_swaps() / (double) TESTS;
 				heap.clear_swaps();
 
+				// Time dequeuing N elements
 				for (int index = 0; index < n; index++) {
 					startTime = System.nanoTime();
 					heap.dequeue();
 					totalDeletionTime += (System.nanoTime() - startTime) / TESTS;
 				}
+				
+				// Get swaps for N elements
 				totalDeletionSwaps += (double) heap.get_swaps() / (double) TESTS;
 				heap.clear_swaps();
 
@@ -153,11 +173,12 @@ public class Timing {
 			long totalBuildFromArrayTime = 0;
 			double totalBuildFromArraySwaps = 0;
 
+			// Timing is done TESTS times and then averaged 
 			for (int test = 0; test < TESTS; test++) {
 				Heap<Integer> heap = new Heap<Integer>();
 				Integer temp[] = new Integer[n];
 
-				// Decide how to add data to array.
+				// Determine the order of data the array being built from is
 				for (int index = 0; index < n; index++) {
 					switch (dataType) {
 					case RANDOM:
@@ -172,10 +193,12 @@ public class Timing {
 					}
 				}
 
+				// Time building a heap
 				long startTime = System.nanoTime();
 				heap.build_heap_from_array(temp);
 				totalBuildFromArrayTime += (System.nanoTime() - startTime) / TESTS;
 
+				// Get swaps in building array
 				totalBuildFromArraySwaps += (double) heap.get_swaps() / (double) TESTS;
 				heap.clear_swaps();
 
@@ -192,6 +215,9 @@ public class Timing {
 		sendToFile(buildFromArrayTimes, "buildFromArrayTimes" + dataType + ".csv");
 	}
 
+	/**
+	 * Times sorting a Heap of size N and keeps tack of swaps.
+	 */
 	public static void testHeapSort() {
 		StringBuilder heapSortTimes = new StringBuilder();
 		Random generator = new Random();
@@ -212,10 +238,12 @@ public class Timing {
 				}
 				heap.clear_swaps();
 
+				// Time sorting data from Heap
 				long startTime = System.nanoTime();
 				heap.heap_sort();
 				totalHeapSortTime += (System.nanoTime() - startTime)/TESTS;
 				
+				// Get swaps for sorting
 				totalHeapSortSwaps += (double) heap.get_swaps() / (double) TESTS;
 				heap.clear_swaps();
 
